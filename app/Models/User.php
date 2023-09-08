@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class User extends Authenticatable
 {
@@ -42,4 +44,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public static function login($credentials)
+    {
+        try {
+            $user = DB::table('users')->where('email', $credentials['email'])->where('email', md5($credentials['password']))->first();
+
+            if ($user) {
+                return $user;
+            }
+
+            return null;
+        } catch (\Exception $e) {
+            // Handle the exception
+            Log::error('Error during user login: ' . $e->getMessage());
+            return null;
+        }
+    }
 }

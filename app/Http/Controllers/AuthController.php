@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -41,6 +42,9 @@ class AuthController extends Controller
             $credentials = ['email' => $email, 'password' => $password];
             // print_r($credentials);exit;
             $user_data = $this->auth($credentials);
+            // $user_data = User::login($credentials);
+            // print_r($user_data);exit;
+
             if ($user_data) {
                 // Create a session for the user
                 $request->session()->put('email', $user_data->email);
