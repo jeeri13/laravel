@@ -29,11 +29,11 @@ class discountController extends Controller
         $user = auth()->user(); // Assuming the user is authenticated
         // $user = PromoCode->auth($credentials);
 
-        echo '<pre/>';print_r($user);exit;
-echo "inside redeem";
+        // echo '<pre/>';print_r($user);exit;
+// echo "inside redeem";
         // Check if the promo code exists
         $promoCode = PromoCode::where('code', $code)->first();
-        echo "<pre/>";print_r($promoCode);
+        // echo "<pre/>";print_r($promoCode);
         if (!$promoCode) {
             return redirect()->back()->with('error', 'Invalid promo code.');
         }
@@ -59,7 +59,7 @@ echo "inside redeem";
             'is_redeemed' => true,
             'user_id' => $user->id,
         ]);
-echo "stop here";exit;
+// echo "stop here";exit;
         return view('promo-code-result', [
             'user' => $user,
             'originalPrice' => $original_price,
