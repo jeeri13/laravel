@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\PromoCode;
+use App\Models\userRedeems;
 use App\User;
 class discountController extends Controller
 {
@@ -16,32 +17,33 @@ class discountController extends Controller
 
     public function processForm(Request $request)
     {
-// print_r($request->all());exit;
 
-        // Retrieve and process form data here
         $original_price = $request->input('price');
         $code = $request->input('promo_code');
-        
-        // For example, redirecting back to the form with a success message:
-        // return redirect()->route('showSimpleUI')->with('success', 'Form submitted successfully');
-    
-        // $code = $request->input('promo_code');
-        $user = auth()->user(); // Assuming the user is authenticated
-        // $user = PromoCode->auth($credentials);
-
-        // echo '<pre/>';print_r($user);exit;
-// echo "inside redeem";
-        // Check if the promo code exists
+        $id = session('id');
+        $user = AuthController::getUser($id); // Assuming the user is authenticated
         $promoCode = PromoCode::where('code', $code)->first();
-        // echo "<pre/>";print_r($promoCode);
+        $userRedeems = userRedeems::where('user_id', $id)->get();
+        if ($promoCode && $promoCode->user_specific) {
+        // Check if the user ID matches the promo code's user_id
+            if ($promoCode->user_id === $id) {
+                if($userRedeems->count() == 0){
+                    $userRedeems->insert(['user_id' => $id]);
+                }else{
+                    return redirect()->back()->with('error', 'This promo code has already been redeemed.');
+                }
+            }
+        }
+
+        // echo "<pre/>";print_r($promoCode);exit;
         if (!$promoCode) {
             return redirect()->back()->with('error', 'Invalid promo code.');
         }
 
         // Check if the promo code has already been redeemed by the user
-        if ($promoCode->is_redeemed) {
-            return redirect()->back()->with('error', 'This promo code has already been redeemed.');
-        }
+        // if ($promoCode->is_redeemed) {
+        //     return redirect()->back()->with('error', 'This promo code has already been redeemed.');
+        // }
 
         // Implement your promo code validation logic here
         // You can use the $promoCode and $user variables to apply specific rules

@@ -13,7 +13,8 @@
                     @if(!session()->has('email'))
                         <a href="login" class="btn-primary">Login</a>
                     @else
-                        <a href="logout">Logout</a>
+                        <b>Welcome {{ session('name') }} </b>
+                        <br/><a href="logout"> Logout </a>
                     @endif
                     </div>
         @if(session('success'))
@@ -21,7 +22,12 @@
                 {{ session('success') }}
             </div>
         @endif
-    <form action="{{ route('processForm') }}" method="POST">
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+    <form action="{{ route('processForm') }}" method="POST" style="margin:10px">
         @csrf <!-- CSRF Token -->
         
         <div>

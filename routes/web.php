@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\discountController;
 use App\Http\Controllers\AuthController;
 Route::get('/', function () {
-    return view('simple-ui');
+    return view('auth.login');
 });
 
 Route::get('/simple-ui', [discountController::class, 'showSimpleUI'])->name('showSimpleUI');

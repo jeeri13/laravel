@@ -99,4 +99,31 @@ class AuthController extends Controller
             return null;
         }
     }
+
+    /**
+     * Custom authentication method.
+     *
+     * @param  string  $id
+     * @return mixed
+     */
+    public static function getUser($id)
+    {
+        try {
+            // Retrieve the user with the given email
+            $user = DB::table('users')
+                ->where('id', $id)
+                ->first();
+                        
+            if ($user) {
+                // Authentication successful; return the user object
+                return $user;
+            }
+            // Authentication failed; return null
+            return null;
+        } catch (\Exception $e) {
+            // Handle the exceptions that might occur during the query
+            return null;
+        }
+    }
+    
 }

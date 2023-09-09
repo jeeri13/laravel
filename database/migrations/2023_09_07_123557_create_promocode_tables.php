@@ -17,7 +17,6 @@ return new class extends Migration
             $table->enum('type', ['percentage', 'fixed']);
             $table->decimal('value', 8, 2);
             $table->boolean('user_specific')->default(false);
-            $table->boolean('is_redeemed')->default(false);
             $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
 
