@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Exception; // Import the Exception class if you intend to use it later
 
 class User extends Authenticatable
 {
@@ -58,6 +59,32 @@ class User extends Authenticatable
         } catch (\Exception $e) {
             // Handle the exception
             Log::error('Error during user login: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Custom authentication method.
+     *
+     * @param  string  $id
+     * @return mixed
+     */
+    public static function getUser($id)
+    {
+        try {
+            // Retrieve the user with the given email
+            $user = DB::table('users')
+                ->where('id', $id)
+                ->first();
+                        
+            if ($user) {
+                // Authentication successful; return the user object
+                return $user;
+            }
+            // Authentication failed; return null
+            return null;
+        } catch (Exception $e) {
+            echo 'Caught exception: ' . $e->getMessage();
             return null;
         }
     }

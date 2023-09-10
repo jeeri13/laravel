@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\PromoCode;
 use App\Models\userRedeems;
 use App\User;
+
 class discountController extends Controller
 {
 
@@ -17,13 +18,27 @@ class discountController extends Controller
 
     public function processForm(Request $request)
     {
+        // $price = $request->input(price);
+        // print_r($request->input(price));
+        $id = session('id');
+        $name = session('name');
+        $email = session('email');
 
         $original_price = $request->input('price');
         $code = $request->input('promo_code');
         $id = session('id');
-        $user = AuthController::getUser($id); // Assuming the user is authenticated
+        $allSessionData = session()->all();
+        // echo '<pre>'; 
+        // print_r($allSessionData);
+        $user = PromoCode::getUser($id);
+        // print_r($user);
         $promoCode = PromoCode::where('code', $code)->first();
+        // print_r($promoCode->value);
+        // $discounted_price = $original_price - $promoCode->value;
+        
         $userRedeems = userRedeems::where('user_id', $id)->get();
+        // print_r($userRedeems); 
+        // exit;
         if ($promoCode && $promoCode->user_specific) {
         // Check if the user ID matches the promo code's user_id
             if ($promoCode->user_id === $id) {
@@ -61,7 +76,7 @@ class discountController extends Controller
             'is_redeemed' => true,
             'user_id' => $user->id,
         ]);
-// echo "stop here";exit;
+        
         return view('promo-code-result', [
             'user' => $user,
             'originalPrice' => $original_price,

@@ -7,7 +7,8 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function showLoginForm(){
+    public function showLoginForm()
+    {
         return view('auth.login');
         // if(session()->has('email'))
         // {
@@ -17,7 +18,8 @@ class AuthController extends Controller
         //     return view('auth.login'); // The view for the login form
         // }
     }
-     /**
+    
+    /**
      * Handle the login form submission.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -25,8 +27,7 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-// print_r($request->all());exit;
-
+        // print_r($request->all());exit;
         // if(session()->has('email'))
         // {
         //     return redirect('/');
@@ -38,12 +39,11 @@ class AuthController extends Controller
 
             $email = $request->input('email');
             $password = $request->input('password');
-
             $credentials = ['email' => $email, 'password' => $password];
             // print_r($credentials);exit;
             $user_data = $this->auth($credentials);
             // $user_data = User::login($credentials);
-            // print_r($user_data);exit;
+            // print_r($user_data); exit;
 
             if ($user_data) {
                 // Create a session for the user
