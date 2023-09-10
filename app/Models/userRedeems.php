@@ -8,9 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class userRedeems extends Model
 {
     use HasFactory;
-    // public function user()
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
-// test.user_redeems
+    // use HasFactory;
+    protected $table = 'user_redeems';
+    protected $fillable = [
+        'code',
+        'type',
+        'value',
+        'user_id',
+        'is_redeemed',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
