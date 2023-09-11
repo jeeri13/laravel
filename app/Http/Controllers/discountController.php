@@ -72,9 +72,9 @@ class discountController extends Controller
     }
     public function calculation($promoCode_type, $promoCode_value, $original_price){
         if ($promoCode_type === 'percentage') {
-            $discountedPrice = $original_price + ($original_price * ($promoCode_value / 100));
+            $discountedPrice = $original_price - ($original_price * ($promoCode_value / 100));
         } else {
-            $discountedPrice = $original_price + $promoCode_value;
+            $discountedPrice = $original_price - $promoCode_value;
         }
         return $discountedPrice;
     }
